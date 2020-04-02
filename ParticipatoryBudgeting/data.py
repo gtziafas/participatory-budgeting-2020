@@ -1,6 +1,6 @@
 import pandas pd 
 
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 Sample = Tuple[int, str, str, int, str, str, str, int, bool, int]
 Samples = List[Sample]
@@ -34,4 +34,16 @@ class ParticipatoryBudgetingDataset(object):
     def filter_year(self, year: int) -> Samples:
         return list(filter(lambda l: l[0] == year, self.listed))
 
+    def filter_winners(self) -> Samples:
+        return list(filter(lambda l: l[8], self.listed))
+
+    def filter_cost(self, cost_thresh: int, upper: Optional[bool]=True) -> Samples:
+        if not upper:
+            return list(filter(lambda l: l[9] > cost_thresh, self.listed))
+        return list(filter(lambda l: l[9] < cost_thresh, self.listed))
+
+    def filter_votes(self, votes_thresh: int, upper: Optional[bool]=True) -> Samples:
+        if not upper:
+            return list(filter(lambda l: l[9] > votes_thresh, self.listed))
+        return list(filter(lambda l: l[7] < votes_thresh, self.listed))
     
