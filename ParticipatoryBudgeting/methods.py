@@ -2,6 +2,8 @@ import numpy as np
 
 from ParticipatoryBudgeting.data import *
 
+from typing import List 
+
 Ballot = List[int]
 
 class K_approval(object):
@@ -12,5 +14,5 @@ class K_approval(object):
 
     def set_ballot(self, agent: int, ballot: Ballot) -> None:
         assert agent < self.num_agents, 'Invalid agent id (must be <{}).'.format(self.num_agents)
-        assert len(ballot) < self.num_projects, 'Invalid ballot given (cannot give >{} projects'.format(self.num_projects)        
+        assert len(ballot) < self.num_projects, 'Invalid ballot given (cannot give >{} projects)'.format(self.num_projects)        
         self.ballots[agent, :len(ballot)] = np.array(ballot)
