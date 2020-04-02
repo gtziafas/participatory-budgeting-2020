@@ -1,6 +1,6 @@
 import numpy as np 
 
-from KnapshackNewYork.data import *
+from ParticipatoryBudgeting.data import *
 
 Ballot = List[int]
 
