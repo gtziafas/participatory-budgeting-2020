@@ -76,10 +76,12 @@ def generate_random_ballots(dataset: Samples, votes: List[int], num_voters: int)
 def pbnyc_2017():
     dataset = ParticipatoryBudgetingDataset('Participatory_Budgeting_Projects.csv')
     num_voters = 65000
+    num_simulations = 10 
 
     _2017 = dataset.filter_year(2017)
     votes = get_votes_from_listed(_2017)
 
     ballots = generate_random_ballots(_2017, votes, num_voters)
 
-    np.save('pbnyc_ballots_2017.npy', ballots)
+    for s in range(num_simulations):
+        np.save('pbnyc_ballots_2017_{}.npy'.format(s), ballots)
