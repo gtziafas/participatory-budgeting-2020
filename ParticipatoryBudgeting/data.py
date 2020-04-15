@@ -81,7 +81,6 @@ def pbnyc_2017():
     _2017 = dataset.filter_year(2017)
     votes = get_votes_from_listed(_2017)
 
-    ballots = generate_random_ballots(_2017, votes, num_voters)
-
     for s in range(num_simulations):
+        ballots = generate_random_ballots(_2017, votes, num_voters)
         np.save('pbnyc_ballots_2017_{}.npy'.format(s), ballots)
