@@ -1,22 +1,25 @@
-import numpy as np 
+import pickle
+import numpy as np
 
-from ParticipatoryBudgeting.data import *
+from ParticipatoryBudgeting.k_approval import k_approval
 
 from typing import List 
 
 Ballot = List[int]
+Ballots = List[Ballot]
 
-class K_approval(object):
-    def __init__(self, num_agents: int, num_projects: int):
-        self.num_agents = num_agents
-        self.num_projects = num_projects
-        self.ballots = np.zeros((num_agents, num_projects), dtype=np.int32)
 
-    def set_ballot(self, agent: int, ballot: Ballot) -> None:
-        assert agent < self.num_agents, 'Invalid agent id (must be <{}).'.format(self.num_agents)
-        assert len(ballot) < self.num_projects, 'Invalid ballot given (cannot give >{} projects)'.format(self.num_projects)        
-        self.ballots[agent, :len(ballot)] = np.array(ballot)
-        
+class K_Approval(object):
+    def __init__(self, ballots: Ballots, costs: List[int], kappa: int, max_budget: int):
+        self.ballots = ballots
+        self.costs = costs
+        self.kappa = kappa 
+        self.max_budget = max_budget
+
+    def __call__(self):
+        return k_approval(self.ballots, self.costs, self.max_budget, self.kappa)
+
+
 class Value_for_money(object):
     def __init__(self, num_agents: int, num_projects: int):
         self.num_agents = num_agents
@@ -47,3 +50,16 @@ class Value_for_money(object):
             else:
                 ratio_per_project[maxElement] = -2
         return ratio_per_project, max_budget, total_votes
+
+
+def example_with_k_approval():
+    ballots = np.load('./ParticipatoryBudgeting/ballots0.npy')
+    costs = pickle.load(open('./costs_2017.p', "rb"))
+    budget = 42e06
+    K = 20
+
+    # wrap everything into an object
+    k_app = K_Approval(ballots=ballots, costs=costs, kappa=K, max_budget=budget)
+
+    # just call to see the winning projects 
+    k_app()
