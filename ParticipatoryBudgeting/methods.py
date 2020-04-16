@@ -28,7 +28,7 @@ class Value_for_money(object):
         assert len(ballot) < self.num_projects, 'Invalid ballot given (cannot give >{} projects)'.format(self.num_projects)        
         self.ballots[agent, :len(ballot)] = np.array(ballot)
         
-    ## The function calculate_winners recieve as input a Ballot, the budget available for all the projects and the cost for each
+    ## The function calculate_winners recieve as input the budget available for all the projects and the cost for each
     ## After calculate the ratios, the output is an array where the projects are accepted (-1) or rejected (-2),
     ## the money that is not expend and the number of votes for each project.
     def calculate_winners (self,max_budget, cost_per_project):
