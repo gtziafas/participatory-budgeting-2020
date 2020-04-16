@@ -33,8 +33,8 @@ class Value_for_money(object):
     ## the money that is not expend and the number of votes for each project.
     def calculate_winners (self,max_budget, cost_per_project):
         total_votes = np.zeros(self.num_projects)
-        for agent in ballot:
-            total_votes = np.sum([total_votes, self.ballots], axis=0)
+        for agent in self.ballots:
+            total_votes = np.sum([total_votes, agent], axis=0)
         ratio_per_project = np.true_divide(total_votes,cost_per_project)
         done = False
         while(done == False):
