@@ -53,13 +53,32 @@ class Value_for_money(object):
 
 
 def example_with_k_approval():
-    ballots = np.load('./ParticipatoryBudgeting/ballots0.npy')
-    costs = pickle.load(open('./costs_2017.p', "rb"))
-    budget = 42e06
-    K = 20
 
-    # wrap everything into an object
-    k_app = K_Approval(ballots=ballots, costs=costs, kappa=K, max_budget=budget)
+    for i in range(10):
+        ballots = np.load('./ParticipatoryBudgeting/ballots{}.npy'.format(i))
+        costs = pickle.load(open('./costs_2017.p', "rb"))
+        budget = 42e06
+        K = 20
 
-    # just call to see the winning projects 
-    k_app()
+        # wrap everything into an object
+        k_app = K_Approval(ballots=ballots, costs=costs, kappa=K, max_budget=budget)
+
+        # just call to see the winning projects 
+        winners, budget = k_app()
+
+        print('SIMULATION {}'.format(i))
+        print('-'*100)
+        print(len(winners))
+
+        winning_votes = 0
+        winning_costs = 0
+        total_votes = 0
+        for j in range(len(winners)):
+            winning_votes += sum(ballots[:,winners[j]])
+
+        for k in range(ballots.shape[1]):
+            total_votes += sum(ballots[:,k])
+
+        print('avg satisf={}.'.format(float(winning_votes/total_votes))) 
+        print('cost per winning vote={}'.format(float(budget/winning_votes)))
+        print('-'*100)
