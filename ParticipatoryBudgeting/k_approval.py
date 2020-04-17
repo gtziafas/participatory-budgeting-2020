@@ -3,7 +3,7 @@ import pickle
 import numpy as np 
 
 from collections import OrderedDict
-from typing import List 
+from typing import List, Tuple
 
 Ballot = [np.int32]
 Ballots = [Ballot]
@@ -42,7 +42,7 @@ def rank_projects(ballots: Ballots) -> List[int]:
     return ranked
 
 
-def decide_winners(projects: List[int], costs: List[int], max_budget: int) -> List[int]:
+def decide_winners(projects: List[int], costs: List[int], max_budget: int) -> Tuple[List[int], int]:
     # assuming projects ranked by voter's selections
     current_budget, idx = 0, 0
     winners = []
@@ -50,7 +50,7 @@ def decide_winners(projects: List[int], costs: List[int], max_budget: int) -> Li
         winners.append(projects[idx])
         current_budget += costs[projects[idx]]
         idx += 1
-    return winners
+    return winners, current_budget
 
 
 def k_approval(ballots: Ballots, costs: List[int], max_budget: int, kappa: int) -> List[int]:
@@ -62,9 +62,9 @@ def k_approval(ballots: Ballots, costs: List[int], max_budget: int, kappa: int) 
     ranked_projects = rank_projects(ballots)
 
     # decide the winner
-    winners = decide_winners(ranked_projects, costs, max_budget)
+    winners, winning_budget = decide_winners(ranked_projects, costs, max_budget)
 
-    return winners
+    return winners, winning_budget
 
 
 def main(ballots_filepath: str, costs_picklefile: str):

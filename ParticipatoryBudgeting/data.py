@@ -1,6 +1,8 @@
 import pandas as pd 
 import numpy as np
 
+np.random.seed(1256)
+
 from typing import Tuple, List, Optional
 
 Sample = Tuple[int, str, str, int, str, str, str, int, bool, int]
@@ -15,6 +17,10 @@ def normalize_votes(votes: List[str]) -> List[int]:
 
 def get_votes_from_listed(listed: Samples) -> List[int]:
     return normalize_votes(list(map(lambda l: l[7], listed)))
+
+
+def get_votes_from_listed(listed: Samples) -> List[int]:
+    return list(map(lambda l: l[9], listed))
 
 
 class ParticipatoryBudgetingDataset(object):
@@ -63,6 +69,7 @@ class ParticipatoryBudgetingDataset(object):
 def generate_random_ballots(dataset: Samples, votes: List[int], num_voters: int) -> Ballots:
     num_projects = len(dataset)
     ballots = np.zeros((num_voters, num_projects), dtype=np.int32)
+    np.random.shuffle()
 
     for i in range(len(votes)):
         temp = np.zeros(num_voters, dtype=np.int32)
@@ -78,6 +85,7 @@ def pbnyc_ballots():
     num_voters = 65000
     num_simulations = 10 
     year = 2017
+    max_budget = 42e06
 
     data = dataset.filter_year(year)
     votes = get_votes_from_listed(data)
